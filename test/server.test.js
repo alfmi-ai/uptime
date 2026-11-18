@@ -90,7 +90,7 @@ test('runs the second HTTPS monitors on seconds-based intervals', async (t) => {
   assert.equal(initialJobs.httpsLochnerSecond.url, 'https://lochner.tech');
   assert.equal(initialJobs.httpsLochnerSecond.interval, 60);
   assert.equal(initialJobs.httpsLochnerSecond.intervalUnit, 'seconds');
-  assert.equal(initialJobs.httpsAlfmirSecond.url, 'https://alfmir.ai');
+  assert.equal(initialJobs.httpsAlfmirSecond.url, 'https://alfmi.ai');
   assert.equal(initialJobs.httpsAlfmirSecond.interval, 60);
   assert.equal(initialJobs.httpsAlfmirSecond.intervalUnit, 'seconds');
   assert.equal(initialJobs.httpsLemmySecond.url, 'https://lemmy.lochner.tech');
