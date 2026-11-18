@@ -3,7 +3,7 @@ const requestMonitors = [
   ['httpLochner', 'http-lochner', 'http://lochner.tech'], ['httpsLochner', 'https-lochner', 'https://lochner.tech'],
   ['httpsLochnerSecond', 'https-lochner-second', 'https://lochner.tech', 'Lochner (second check)', 'seconds'],
   ['httpWwwLochner', 'http-www-lochner', 'http://www.lochner.tech'], ['httpsWwwLochner', 'https-www-lochner', 'https://www.lochner.tech'],
-  ['httpLochnerAlfmirPage', 'http-lochner-alfmir-page', 'http://lochner.tech/alfmir.ai.html', 'Alfmir AI page'], ['httpsLochnerAlfmirPage', 'https-lochner-alfmir-page', 'https://lochner.tech/alfmir.ai.html', 'Alfmir AI page'],
+  ['httpLochnerAlfmirPage', 'http-lochner-alfmir-page', 'http://lochner.tech/alfmi.ai.html', 'Alfmir AI page'], ['httpsLochnerAlfmirPage', 'https-lochner-alfmir-page', 'https://lochner.tech/alfmi.ai.html', 'Alfmir AI page'],
   ['httpLochnerApparelPage', 'http-lochner-apparel-page', 'http://lochner.tech/lochner-apparel.html', 'Lochner Apparel page'], ['httpsLochnerApparelPage', 'https-lochner-apparel-page', 'https://lochner.tech/lochner-apparel.html', 'Lochner Apparel page'],
   ['httpLemmy', 'http-lemmy', 'http://lemmy.lochner.tech'], ['httpsLemmy', 'https-lemmy', 'https://lemmy.lochner.tech'],
   ['httpsLemmySecond', 'https-lemmy-second', 'https://lemmy.lochner.tech', 'Lemmy (second check)', 'seconds'],
@@ -11,11 +11,11 @@ const requestMonitors = [
   ['httpsNewsSecond', 'https-news-second', 'https://news.lochner.tech', 'News (second check)', 'seconds'],
   ['tcpIpfsPublishing', 'tcp-ipfs-publishing', '', 'IPFS Publishing Host'],
   ['ipfsLochnerVerification', 'ipfs-lochner-verification', 'ipfs://lochner.tech', 'IPFS Verification'],
-  ['httpAlfmir', 'http-alfmir', 'http://alfmir.ai'], ['httpsAlfmir', 'https-alfmir', 'https://alfmir.ai'],
-  ['httpsAlfmirSecond', 'https-alfmir-second', 'https://alfmir.ai', 'Alfmir (second check)', 'seconds'],
-  ['httpWwwAlfmir', 'http-www-alfmir', 'http://www.alfmir.ai'], ['httpsWwwAlfmir', 'https-www-alfmir', 'https://www.alfmir.ai'],
-  ['httpChatAlfmir', 'http-chat-alfmir', 'http://chat.alfmir.ai'], ['httpsChatAlfmir', 'https-chat-alfmir', 'https://chat.alfmir.ai'],
-  ['httpCodeAlfmir', 'http-code-alfmir', 'http://code.alfmir.ai'], ['httpsCodeAlfmir', 'https-code-alfmir', 'https://code.alfmir.ai'],
+  ['httpAlfmir', 'http-alfmir', 'http://alfmi.ai'], ['httpsAlfmir', 'https-alfmir', 'https://alfmi.ai'],
+  ['httpsAlfmirSecond', 'https-alfmir-second', 'https://alfmi.ai', 'Alfmir (second check)', 'seconds'],
+  ['httpWwwAlfmir', 'http-www-alfmir', 'http://www.alfmi.ai'], ['httpsWwwAlfmir', 'https-www-alfmir', 'https://www.alfmi.ai'],
+  ['httpChatAlfmir', 'http-chat-alfmir', 'http://chat.alfmi.ai'], ['httpsChatAlfmir', 'https-chat-alfmir', 'https://chat.alfmi.ai'],
+  ['httpCodeAlfmir', 'http-code-alfmir', 'http://code.alfmi.ai'], ['httpsCodeAlfmir', 'https-code-alfmir', 'https://code.alfmi.ai'],
   ['httpLitellmAlsh', 'http-litellm-alsh', 'http://litellm.alfe.sh'], ['httpsLitellmAlsh', 'https-litellm-alsh', 'https://litellm.alfe.sh']
 ];
 const primaryMonitorForUrl = new Map();
@@ -176,7 +176,7 @@ function buildUptimeMonitors() {
     chart.setAttribute('aria-label', `${protocol.textContent} ${label || parsed?.host || name} latency history`);
     card.append(header, controls, chart);
     const group = parsed
-      ? (parsed.hostname.endsWith('alfmir.ai') || parsed.hostname === 'litellm.alfe.sh' ? 'alfmir' : 'lochner')
+      ? (parsed.hostname.endsWith('alfmi.ai') || parsed.hostname === 'litellm.alfe.sh' ? 'alfmir' : 'lochner')
       : 'lochner';
     $(`[data-monitor-group="${group}"]`).append(card);
   }
