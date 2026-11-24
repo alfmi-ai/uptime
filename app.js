@@ -38,6 +38,8 @@ let showHttpChecks = true;
 let showWwwChecks = true;
 let showSecondsChecks = true;
 let showMinutesChecks = true;
+let showNewsGraphs = false;
+let showLemmyGraphs = false;
 try { showHttpChecks = localStorage.getItem(httpFilterStorageKey) !== 'false'; } catch {}
 try { showWwwChecks = localStorage.getItem(wwwFilterStorageKey) !== 'false'; } catch {}
 try { showSecondsChecks = localStorage.getItem(secondsFilterStorageKey) !== 'false'; } catch {}
@@ -59,6 +61,15 @@ function monitorKind(url) {
   }
 }
 
+function monitorSite(url) {
+  try {
+    const { hostname } = new URL(url);
+    if (hostname === 'news.lochner.tech') return 'news';
+    if (hostname === 'lemmy.lochner.tech') return 'lemmy';
+  } catch {}
+  return '';
+}
+
 function monitorWww(url) {
   try {
     return new URL(url).hostname.startsWith('www.');
@@ -73,6 +84,8 @@ function historyMatchesJob(entry, jobName, url) {
 }
 
 function cardHiddenByFilters(card) {
+  if (card.dataset.requestSite === 'news' && !showNewsGraphs) return true;
+  if (card.dataset.requestSite === 'lemmy' && !showLemmyGraphs) return true;
   if (filteredView) return !filteredView.matches(card);
   return (card.dataset.requestKind === 'http' && !showHttpChecks)
     || (card.dataset.requestWww === 'true' && !showWwwChecks)
@@ -122,6 +135,7 @@ function buildUptimeMonitors() {
     card.dataset.requestLabel = label || '';
     card.dataset.requestKind = monitorKind(url);
     card.dataset.requestWww = String(parsed?.hostname.startsWith('www.') || false);
+    card.dataset.requestSite = monitorSite(url);
     card.dataset.intervalUnit = intervalUnit;
 
     const header = document.createElement('header');
@@ -204,6 +218,15 @@ async function loadMonitorOrder() {
   } catch {}
 }
 
+async function loadSiteVisibility() {
+  try {
+    const config = await fetchJson('/api/config');
+    showNewsGraphs = config.showNewsGraphs === true;
+    showLemmyGraphs = config.showLemmyGraphs === true;
+    applyUptimeFilters();
+  } catch {}
+}
+
 async function saveMonitorOrder() {
   const version = ++monitorOrderSaveVersion;
   const order = [...monitorOrder];
@@ -222,6 +245,7 @@ applyMonitorOrder(monitorOrder);
 buildUptimeMonitors();
 applyUptimeFilters();
 loadMonitorOrder();
+loadSiteVisibility();
 
 const uptimeMonitors = $('#uptime-monitors');
 uptimeMonitors.addEventListener('dragstart', (event) => {
@@ -271,6 +295,7 @@ function applyMonitorJob(name, job) {
   card.dataset.requestUrl = job.url;
   card.dataset.requestKind = monitorKind(job.url);
   card.dataset.requestWww = String(monitorWww(job.url));
+  card.dataset.requestSite = monitorSite(job.url);
   card.hidden = cardHiddenByFilters(card);
   const protocol = card.querySelector('.monitor-protocol');
   if (protocol) protocol.textContent = job.url.split(':', 1)[0].toUpperCase();

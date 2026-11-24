@@ -64,6 +64,10 @@ const intervalDefinitions = new Map(Object.values(jobDefinitions).map((definitio
 const defaultHistoryLimit = 5_000;
 const maximumHistoryLimit = 20_000;
 
+function envFlag(value) {
+  return /^(1|true|yes|on)$/i.test((value || '').trim());
+}
+
 function clampInterval(definition, interval) {
   const maximum = definition.intervalUnit === 'seconds' ? 86_400 : 1440;
   return Math.min(maximum, Math.max(1, interval));
@@ -82,7 +86,9 @@ export function createUptimeWebappServer({
   checkTcp = checkTcpPortFromRemote,
   verifyIpfs = verifyIpfsPublication,
   setTimeoutImpl = setTimeout,
-  clearTimeoutImpl = clearTimeout
+  clearTimeoutImpl = clearTimeout,
+  showNewsGraphs = envFlag(process.env.SHOW_NEWS_GRAPHS),
+  showLemmyGraphs = envFlag(process.env.SHOW_LEMMY_GRAPHS)
 } = {}) {
   let settingsWrite = Promise.resolve();
   let historyWrite = Promise.resolve();
@@ -318,6 +324,11 @@ export function createUptimeWebappServer({
         }
       }
       return json(response, 405, { error: 'Method not allowed.' });
+    }
+
+    if (url.pathname === '/api/config') {
+      if (request.method !== 'GET') return json(response, 405, { error: 'Method not allowed.' });
+      return json(response, 200, { showNewsGraphs, showLemmyGraphs });
     }
 
     if (url.pathname === '/api/monitor-order') {
