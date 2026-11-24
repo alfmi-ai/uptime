@@ -181,6 +181,29 @@ test('serves only the most recent history entries when a limit is requested', as
   assert.equal(invalid.length, 3);
 });
 
+test('hides news and lemmy graphs unless their environment flags are enabled', async (t) => {
+  const directory = await createTempDirectory(t);
+  const options = {
+    jobsPath: join(directory, 'jobs.json'),
+    historyPath: join(directory, 'history.jsonl'),
+    fetchImpl: async () => { throw new Error('Unexpected check request.'); }
+  };
+
+  const hidden = createUptimeWebappServer(options);
+  const hiddenOrigin = await listen(hidden, t);
+  assert.deepEqual(await (await fetch(`${hiddenOrigin}/api/config`)).json(), {
+    showNewsGraphs: false,
+    showLemmyGraphs: false
+  });
+  assert.equal((await fetch(`${hiddenOrigin}/api/config`, { method: 'POST' })).status, 405);
+
+  const visible = await listen(createUptimeWebappServer({ ...options, showNewsGraphs: true }), t);
+  assert.deepEqual(await (await fetch(`${visible}/api/config`)).json(), {
+    showNewsGraphs: true,
+    showLemmyGraphs: false
+  });
+});
+
 test('persists the monitor display order', async (t) => {
   const directory = await createTempDirectory(t);
   const orderPath = join(directory, 'monitor-order.json');

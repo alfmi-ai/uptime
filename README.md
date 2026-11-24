@@ -30,6 +30,8 @@ environment take precedence.
 | `UPTIME_WEBAPP_JOBS_DATA` | `./data/jobs.json` | Job settings file. |
 | `UPTIME_WEBAPP_HISTORY_DATA` | `./data/history.jsonl` | Check history file. |
 | `UPTIME_WEBAPP_ORDER_DATA` | `./data/monitor-order.json` | Monitor display order file. |
+| `SHOW_NEWS_GRAPHS` | unset (hidden) | Set to `true` to show the `news.lochner.tech` monitors. When unset, they are hidden. |
+| `SHOW_LEMMY_GRAPHS` | unset (hidden) | Set to `true` to show the `lemmy.lochner.tech` monitors. When unset, they are hidden. |
 | `IPFS_PUBLISHING_HOST` | none | IP address or hostname of the IPFS publishing target. Required to enable the IPFS publishing monitor. |
 | `IPFS_PUBLISHING_PORT` | `4001` | TCP port of the IPFS publishing target. |
 | `IPFS_UPTIME_SSH_HOST` | none | SSH host used for the remote TCP check. Required to enable the IPFS publishing monitor. |
